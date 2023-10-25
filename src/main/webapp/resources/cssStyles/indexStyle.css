@@ -16,6 +16,11 @@ body {
     font-size: 24px;
     font-family: cursive;
 }
+.mainStruct {
+    text-align: center;
+    padding-top: 20px;
+    color: #f5f3f7;
+}
 
 h2{
     font-size: 28px;
@@ -36,38 +41,4 @@ h3{
     border-radius: 10px;
     max-width: 200px;
     max-height: 50px;
-}
-
-#tableU {
-    margin-top: 10px;
-    border-collapse: separate;
-    letter-spacing: 1px;
-    background-color: #1c1326;
-    color: #f5f3f7;
-    text-align: center;
-    border-radius: 16px;
-    border-spacing: 8px;
-    border: 2px solid #f5f3f7;
-    width: 40%;
-}
-
-#tableU th {
-    vertical-align: middle;
-}
-
-.zone{
-    height: 300px;
-    width: 180px;
-    text-align: center;
-    border: 2px solid #1c1326;
-    padding: 20px;
-    margin: 60px auto;
-    margin-top: 60px;
-    color: #f5f3f7;
-    font-size: 22px;
-    font-family: cursive;
-}
-
-.zone h3 {
-    margin: 0;
 }
