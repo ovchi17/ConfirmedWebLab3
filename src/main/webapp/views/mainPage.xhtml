@@ -4,7 +4,8 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
 
 <h:head>
     <title>Main page</title>
@@ -33,10 +34,26 @@
                         <br></br>
                         <br></br>
                         <div class="buttons-container1" id="buttonsList1">
+                            <h:outputLabel value="Выберете X от -5 до 5: "/>
+                            <h:inputText value="#{beanOfElements.element.x}" />
                         </div>
                         <div id="y-input">
+                            <h:outputLabel value="Выберете Y: "/>
+                            <h:selectOneMenu value="#{beanOfElements.element.y}">
+                                <f:selectItem itemValue="-3" itemLabel="-3" />
+                                <f:selectItem itemValue="-2" itemLabel="-2" />
+                                <f:selectItem itemValue="-1" itemLabel="-1" />
+                                <f:selectItem itemValue="0" itemLabel="0" />
+                                <f:selectItem itemValue="1" itemLabel="1" />
+                                <f:selectItem itemValue="2" itemLabel="2" />
+                                <f:selectItem itemValue="3" itemLabel="3" />
+                                <f:selectItem itemValue="4" itemLabel="4" />
+                                <f:selectItem itemValue="5" itemLabel="5" />
+                            </h:selectOneMenu>
                         </div>
                         <div class="buttons-container2" id="buttonsList2">
+                            <h:outputLabel value="Выберете R: "/>
+                            <h:inputText value="#{beanOfElements.element.r}" />
                         </div>
                     </div>
                     <input type="submit" class="bigButtons" name="submitButton" value="Подтвердить"></input>>
@@ -47,7 +64,7 @@
     </div>
     <br></br>
     <div id="resultTable">
-        <button class="bigButtons" onclick="">URL'S</button>
+        <h:button class="bigButtons" outcome="change_to_index" value="Hello Page"></h:button>
         <table id="table">
             <tr>
                 <th>Result</th>
