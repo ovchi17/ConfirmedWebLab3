@@ -33,11 +33,11 @@
                     <div id="structForm">
                         <br></br>
                         <br></br>
-                        <div class="buttons-container1" id="buttonsList1">
+                        <div class="x-input" id="x-input">
                             <h:outputLabel value="Выберете X от -5 до 5: "/>
                             <h:inputText value="#{beanOfElements.element.x}" />
                         </div>
-                        <div id="y-input">
+                        <div class="y-input" id="y-input">
                             <h:outputLabel value="Выберете Y: "/>
                             <h:selectOneMenu value="#{beanOfElements.element.y}">
                                 <f:selectItem itemValue="-3" itemLabel="-3" />
@@ -51,12 +51,18 @@
                                 <f:selectItem itemValue="5" itemLabel="5" />
                             </h:selectOneMenu>
                         </div>
-                        <div class="buttons-container2" id="buttonsList2">
+                        <div class="r-input" id="r-input">
                             <h:outputLabel value="Выберете R: "/>
-                            <h:inputText value="#{beanOfElements.element.r}" />
+                            <h:selectOneMenu value="#{beanOfElements.element.r}">
+                                <f:selectItem itemValue="1" itemLabel="1" />
+                                <f:selectItem itemValue="1.5" itemLabel="1.5" />
+                                <f:selectItem itemValue="2" itemLabel="2" />
+                                <f:selectItem itemValue="2.5" itemLabel="2.5" />
+                                <f:selectItem itemValue="3" itemLabel="3" />
+                            </h:selectOneMenu>
                         </div>
                     </div>
-                    <input type="submit" class="bigButtons" name="submitButton" value="Подтвердить"></input>>
+                    <input type="submit" class="bigButtons" name="submitButton" value="Подтвердить"></input>
                 </div>
             </h:form>
 
