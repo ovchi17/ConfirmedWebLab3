@@ -1,23 +1,20 @@
 package aca98b.web3lv2;
 
-import jakarta.faces.bean.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.faces.bean.ManagedBean;
+import jakarta.faces.event.AjaxBehaviorEvent;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.PostConstruct;
+import jakarta.inject.Named;
 
-@ManagedBean
+
+@Named
 @ApplicationScoped
 public class BeanOfElements implements Serializable {
-    private OneElement element;
-    private List<OneElement> listOfElements;
-
-    @PostConstruct
-    public void postConstruct() {
-        element = new OneElement();
-        listOfElements = new ArrayList<OneElement>();
-    }
+    private OneElement element = new OneElement();;
+    private List<OneElement> listOfElements = new ArrayList<OneElement>();;
 
     public void clear(){
         listOfElements.clear();
