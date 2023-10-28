@@ -41,6 +41,7 @@ h2:first-letter{
 
 .container > .XYcoord {
     height: 400px;
+    width: 400px;
     text-align: center;
     border: 0px solid #1c1326;
     padding: 20px;
