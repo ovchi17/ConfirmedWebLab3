@@ -13,12 +13,12 @@ import java.util.Objects;
 @ApplicationScoped
 public class YBean implements Serializable {
 
-    private Float value;
-    public Float getValue() {
+    private String value;
+    public String getValue() {
         return value;
     }
 
-    public void setValue(Float value) {
+    public void setValue(String value) {
         this.value = value;
     }
 

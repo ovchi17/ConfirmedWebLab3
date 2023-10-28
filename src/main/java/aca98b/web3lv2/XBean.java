@@ -14,18 +14,34 @@ import java.util.Objects;
 @ApplicationScoped
 public class XBean implements Serializable {
 
-    private Float value;
-    public Float getValue() {
+    private String value;
+    public String getValue() {
         return value;
     }
 
-    public void setValue(Float value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
-    public void yChecker(FacesContext fC, UIComponent uC, Object val) {
+    public void xChecker(FacesContext fC, UIComponent uC, Object val) {
         if (val == null) {
-            System.out.println("soon");
+            FacesMessage message = new FacesMessage("write X value!");
+            throw new ValidatorException(message);
+        }
+
+        String strVal = val.toString().trim();
+        if (!strVal.matches("-?\\d+(\\.\\d+)?")) {
+            FacesMessage message = new FacesMessage("X is not a valid number!");
+            throw new ValidatorException(message);
+        }
+
+        double x = Double.parseDouble(strVal);
+        if (x < -5 || x > 5) {
+            FacesMessage message = new FacesMessage("X must be from -5 to 5!");
+            throw new ValidatorException(message);
         }
     }
+
+
+
 }

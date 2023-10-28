@@ -5,7 +5,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
 <h:head>
     <title>Main page</title>
@@ -32,11 +33,12 @@
             <h:form  name="simpleForm" onsubmit="">
                 <div id="form">
                     <div id="structForm">
-                        <br></br>
+                        <p:messages showSummary="true" showDetail="false" autoUpdate="true" />
                         <br></br>
                         <div class="x-input">
-                            <h:outputLabel value="Выберете X от -5 до 5: "/>
-                            <h:inputText id="x-input" value="#{xBean.value}" maxlength="7">
+                            <h:outputLabel for="x-input" value="Выберете X от -5 до 5: "/>
+                            <h:inputText id="x-input" value="#{xBean.value}" maxlength="7" validator="#{xBean.xChecker}">
+                                <f:ajax execute="x-input" render="@form" />
                             </h:inputText>
                         </div>
                         <div class="y-input" id="y-input">
