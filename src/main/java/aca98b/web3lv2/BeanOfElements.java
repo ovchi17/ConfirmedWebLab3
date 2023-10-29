@@ -36,7 +36,7 @@ public class BeanOfElements implements Serializable {
     }
 
     public void addNew(String xNew, String yNew, String rNew){
-        //try{
+        try{
             float x = Float.parseFloat(xNew);
             float y = Float.parseFloat(yNew);
             float r = Float.parseFloat(rNew);
@@ -45,24 +45,17 @@ public class BeanOfElements implements Serializable {
             System.out.println(r);
             long scriptStart = System.nanoTime();
             if (x >= -5f && x <= 5f && y >= -3f && y <= 5f && areaCheck.inArr(r, arrayOfR)){
-                System.out.println("point1");
                 String res = areaCheck.checker(x, y, r);
-                System.out.println("point2");
                 LocalTime currentTime = LocalTime.now();
-                System.out.println("point3");
                 String curTime = currentTime.format(formatter);
-                System.out.println("point4");
                 String scriptTime = String.format("%.2f", (double) (System.nanoTime() - scriptStart) * 0.0001);
-                System.out.println("point5");
                 OneElement el = new OneElement(x, y, r, res, curTime, scriptTime);
-                System.out.println("point6");
                 listOfElements.add(el);
-                System.out.println("point7");
             }
-        //} catch (Exception e) {
-            //FacesMessage message = new FacesMessage("Bad args for numbers!");
-            //throw new ValidatorException(message);
-        //}
+        } catch (Exception e) {
+            FacesMessage message = new FacesMessage("Bad args for numbers!");
+            throw new ValidatorException(message);
+        }
     }
 
     public int getSize(){
