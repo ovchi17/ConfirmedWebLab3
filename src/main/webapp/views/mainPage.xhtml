@@ -97,9 +97,9 @@
                             </h:selectOneMenu>
                         </div>
                     </div>
-                    <h:commandButton type="submit"
-                                     value="Подтвердить"
-                                     class="bigButtons">
+                    <h:outputText value="#{beanOfElements.getSize()}" />
+                    <h:commandButton type="submit" value="Confirm" class="bigButtons">
+                        <f:ajax execute="@form" listener="#{beanOfElements.addNew(xBean.value, yBean.value, rBean.value)}" render="@form" update="@form h:outputText" />
                     </h:commandButton>
                 </div>
             </h:form>
