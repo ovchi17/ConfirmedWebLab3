@@ -1,20 +1,20 @@
 package aca98b.web3lv2;
 
 public final class OneElement {
-    private float x;
-    private float y;
-    private float r;
-    private String result;
-    private String time;
-    private String scriptTIme;
+    public float x;
+    public float y;
+    public float r;
+    public String result;
+    public String time;
+    public String scriptTime;
 
-    public OneElement(float x, float y, float r, String result, String time, String scriptTIme){
+    public OneElement(float x, float y, float r, String result, String time, String scriptTime){
         this.x = x;
         this.y = y;
         this.r = r;
         this.result = result;
         this.time = time;
-        this.scriptTIme = scriptTIme;
+        this.scriptTime = scriptTime;
     }
 
     public OneElement(){
@@ -60,12 +60,12 @@ public final class OneElement {
         this.time = time;
     }
 
-    public String getScriptTIme() {
-        return scriptTIme;
+    public String getScriptTime() {
+        return scriptTime;
     }
 
-    public void setScriptTIme(String scriptTIme) {
-        this.scriptTIme = scriptTIme;
+    public void setScriptTime(String scriptTime) {
+        this.scriptTime = scriptTime;
     }
 
 }

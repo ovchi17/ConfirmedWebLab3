@@ -66,4 +66,8 @@ public class BeanOfElements implements Serializable {
         listOfElements.clear();
     }
 
+    public List<OneElement> getList(){
+        return listOfElements;
+    }
+
 }

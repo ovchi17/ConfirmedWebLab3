@@ -61,7 +61,7 @@
                     </p:outputPanel>
                 </p:outputPanel>
             </div>
-            <h:form id="simpleForm" onsubmit="">
+            <h:form id="simpleForm" onsubmit="" prependId="false">
                 <div id="form">
                     <div id="structForm">
                         <p:messages showSummary="true" showDetail="false" autoUpdate="true"/>
@@ -100,7 +100,7 @@
                     </div>
                     <h:outputText value="#{beanOfElements.getSize()}" />
                     <h:commandButton type="submit" value="Confirm" class="bigButtons">
-                        <f:ajax execute="@form" listener="#{beanOfElements.addNew(xBean.value, yBean.value, rBean.value)}" render="@form" update="@form h:outputText" />
+                        <f:ajax execute="@form" listener="#{beanOfElements.addNew(xBean.value, yBean.value, rBean.value)}" render="@all" />
                     </h:commandButton>
                 </div>
             </h:form>
@@ -111,18 +111,34 @@
     <div id="resultTable">
         <h:button class="bigButtons" outcome="change_to_index" value="Hello Page"/>
         <h:commandButton type="submit" value="Clear" class="bigButtons">
-            <f:ajax execute="@form" listener="#{beanOfElements.clear}" render="@form" update="@form h:outputText" />
+            <f:ajax execute="@form" listener="#{beanOfElements.clear}" render="@all" />
         </h:commandButton>
-        <table id="table">
-            <tr>
-                <th>Result</th>
-                <th>X</th>
-                <th>Y</th>
-                <th>R</th>
-                <th>Current Time</th>
-                <th>Script time</th>
-            </tr>
-        </table>
+        <h:dataTable id="table" value="#{beanOfElements.getList()}" var="el">
+            <h:column>
+                <f:facet name="header">Result</f:facet>
+                <h:outputText value="#{el.result}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">X</f:facet>
+                <h:outputText value="#{el.x}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Y</f:facet>
+                <h:outputText value="#{el.y}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">R</f:facet>
+                <h:outputText value="#{el.r}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Current Time</f:facet>
+                <h:outputText value="#{el.time}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Script Time</f:facet>
+                <h:outputText value="#{el.scriptTime}"/>
+            </h:column>
+        </h:dataTable>
     </div>
 </h:body>
 </html>
