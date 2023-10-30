@@ -110,6 +110,9 @@
     <br> </br>
     <div id="resultTable">
         <h:button class="bigButtons" outcome="change_to_index" value="Hello Page"/>
+        <h:commandButton type="submit" value="Clear" class="bigButtons">
+            <f:ajax execute="@form" listener="#{beanOfElements.clear}" render="@form" update="@form h:outputText" />
+        </h:commandButton>
         <table id="table">
             <tr>
                 <th>Result</th>
