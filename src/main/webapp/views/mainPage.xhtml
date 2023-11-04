@@ -5,7 +5,6 @@
 <h:head>
     <title>Main page</title>
     <h:outputStylesheet name="cssStyles/mainCss.css"/>
-    <h:outputScript library="js" name="graph.js"/>
 </h:head>
 <h:body>
     <div class="header">
@@ -61,6 +60,7 @@
                     </p:outputPanel>
                 </p:outputPanel>
             </div>
+            <p:remoteCommand name="clickSender" action="#{beanOfElements.addNewGraph}" update=":table" />
             <h:form id="simpleForm" onsubmit="" prependId="false">
                 <div id="form">
                     <div id="structForm">
@@ -139,5 +139,6 @@
             </h:column>
         </h:dataTable>
     </div>
+    <h:outputScript library="js" name="graph.js"/>
 </h:body>
 </html>

@@ -3,6 +3,7 @@ package aca98b.web3lv2;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.bean.ManagedBean;
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
 
 import java.io.Serializable;
@@ -10,6 +11,8 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import jakarta.inject.Inject;
 
 import jakarta.faces.validator.ValidatorException;
@@ -68,6 +71,26 @@ public class BeanOfElements implements Serializable {
 
     public List<OneElement> getList(){
         return listOfElements;
+    }
+
+    public void addNewGraph(){
+        Map<String, String> values = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        float x = Float.parseFloat(values .get("x"));
+        float y = Float.parseFloat(values .get("y"));
+        float r = Float.parseFloat(values .get("r"));
+        System.out.println("GOT VALUES");
+        System.out.println(x);
+        System.out.println(y);
+        System.out.println(r);
+        long scriptStart = System.nanoTime();
+        if (x >= -5f && x <= 5f && y >= -3f && y <= 5f && areaCheck.inArr(r, arrayOfR)){
+            String res = areaCheck.checker(x, y, r);
+            LocalTime currentTime = LocalTime.now();
+            String curTime = currentTime.format(formatter);
+            String scriptTime = String.format("%.2f", (double) (System.nanoTime() - scriptStart) * 0.0001);
+            OneElement el = new OneElement(x, y, r, res, curTime, scriptTime);
+            listOfElements.add(el);
+        }
     }
 
 }

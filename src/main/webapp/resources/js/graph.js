@@ -52,6 +52,7 @@ $(document).ready(function () {
 
             console.log(`x: ${x}, normX: ${normalizedX}`)
             console.log(`y: ${y}, normY: ${normalizedY}`)
+            clickSender([{name: 'x', value: normalizedX}, {name: 'y', value: normalizedY}, {name: 'r', value: R}]);
         }
     });
 });
