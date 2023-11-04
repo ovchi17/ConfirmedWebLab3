@@ -98,9 +98,8 @@
                             </h:selectOneMenu>
                         </div>
                     </div>
-                    <h:outputText value="#{beanOfElements.getSize()}" />
                     <h:commandButton type="submit" value="Confirm" class="bigButtons">
-                        <f:ajax execute="@form" listener="#{beanOfElements.addNew(xBean.value, yBean.value, rBean.value)}" render="@all" />
+                        <f:ajax execute="@form" listener="#{beanOfElements.addNew(xBean.value, yBean.value, rBean.value)}" render=":table" />
                     </h:commandButton>
                 </div>
             </h:form>
@@ -111,7 +110,7 @@
     <div id="resultTable">
         <h:button class="bigButtons" outcome="change_to_index" value="Hello Page"/>
         <h:commandButton type="submit" value="Clear" class="bigButtons">
-            <f:ajax execute="@form" listener="#{beanOfElements.clear}" render="@all" />
+            <f:ajax execute="@form" listener="#{beanOfElements.clear}" render=":table" />
         </h:commandButton>
         <h:dataTable id="table" value="#{beanOfElements.getList()}" var="el">
             <h:column>

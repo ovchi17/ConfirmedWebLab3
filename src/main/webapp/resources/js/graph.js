@@ -21,6 +21,7 @@ function checker(x, y, r) {
     return resultF;
 }
 
+
 $(document).ready(function () {
     let R_button = $(".r-input select");
     $(".XYcoord svg").click(function (event) {
