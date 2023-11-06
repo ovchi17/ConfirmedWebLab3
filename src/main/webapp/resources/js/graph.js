@@ -1,3 +1,4 @@
+let R = 1;
 function checker(x, y, r) {
     let resultF = false;
 
@@ -30,7 +31,8 @@ function drawPoints(xhr, status, args) {
         points.forEach(function(el) {
             let normalizedX = el.x;
             let normalizedY = el.y;
-            let r = el.r;
+            // let r = el.r;
+            let r = Number($(".r-input select").val());
             let posX = normalizedX * 300 / 2 / r + 200;
             let posY = 200 - normalizedY * 300 / 2 / r;
             let point = document.createElementNS(
@@ -40,6 +42,7 @@ function drawPoints(xhr, status, args) {
             point.setAttribute("cx", posX);
             point.setAttribute("cy", posY);
             point.setAttribute("r", "3");
+            point.setAttribute("class", "graph-point");
             let checkStatus = checker(normalizedX, normalizedY, r);
             if (checkStatus) {
                 point.setAttribute("fill", "white");
@@ -54,13 +57,27 @@ function drawPoints(xhr, status, args) {
     }
 }
 
-function clear () {
-
+function rSetter () {
+    R = $(".r-input select").val()
+    console.log(R)
+    $(".svgR").each(function(){
+        $(this).text(R)
+    })
+    $(".svg-R").each(function(){
+        $(this).text(-R)
+    })
+    $(".svgRd2").each(function(){
+        $(this).text(R/2)
+    })
+    $(".svg-Rd2").each(function(){
+        $(this).text(-R/2)
+    })
 }
 
 document.addEventListener('DOMContentLoaded', function() {
     loadPoints();
     console.log("loadPoints");
+    rSetter()
 
     $(".XYcoord svg").click(function (event) {
         // if (R_button) {
@@ -100,10 +117,18 @@ document.addEventListener('DOMContentLoaded', function() {
         // }
     });
 
-    $("#clear").click(function () {
+    $("#clear").click(function(){
         $(".graph-point").each(function() {
             $(this).remove();
         });
+    })
+
+    $(".r-input select").change(function (){
+        rSetter()
+        $(".graph-point").each(function() {
+            $(this).remove();
+        });
+        loadPoints()
     })
 });
 
