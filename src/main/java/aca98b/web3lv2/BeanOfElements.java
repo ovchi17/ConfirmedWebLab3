@@ -71,6 +71,8 @@ public class BeanOfElements implements Serializable {
 
     public void clear(){
         listOfElements.clear();
+        System.out.println(listOfElements);
+        System.out.println("NORM 4ISTENbKO");
     }
 
     public List<OneElement> getList(){
@@ -79,21 +81,25 @@ public class BeanOfElements implements Serializable {
 
     public void addNewGraph(){
         Map<String, String> values = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        float x = Float.parseFloat(values .get("x"));
-        float y = Float.parseFloat(values .get("y"));
-        float r = Float.parseFloat(values .get("r"));
-        System.out.println("GOT VALUES");
-        System.out.println(x);
-        System.out.println(y);
-        System.out.println(r);
-        long scriptStart = System.nanoTime();
-        if (x >= -5f && x <= 5f && y >= -3f && y <= 5f && areaCheck.inArr(r, arrayOfR)){
-            String res = areaCheck.checker(x, y, r);
-            LocalTime currentTime = LocalTime.now();
-            String curTime = currentTime.format(formatter);
-            String scriptTime = String.format("%.2f", (double) (System.nanoTime() - scriptStart) * 0.0001);
-            OneElement el = new OneElement(x, y, r, res, curTime, scriptTime);
-            listOfElements.add(el);
+        try {
+            float x = Float.parseFloat(values.get("x"));
+            float y = Float.parseFloat(values.get("y"));
+            float r = Float.parseFloat(values.get("r"));
+            System.out.println("GOT VALUES");
+            System.out.println(x);
+            System.out.println(y);
+            System.out.println(r);
+            long scriptStart = System.nanoTime();
+            if (x >= -5f && x <= 5f && y >= -3f && y <= 5f && areaCheck.inArr(r, arrayOfR)) {
+                String res = areaCheck.checker(x, y, r);
+                LocalTime currentTime = LocalTime.now();
+                String curTime = currentTime.format(formatter);
+                String scriptTime = String.format("%.2f", (double) (System.nanoTime() - scriptStart) * 0.0001);
+                OneElement el = new OneElement(x, y, r, res, curTime, scriptTime);
+                listOfElements.add(el);
+            }
+        } catch (Exception e) {
+            System.out.println("БЛЯЯЯЯЯЯЯЯЯЯЯ");
         }
     }
 

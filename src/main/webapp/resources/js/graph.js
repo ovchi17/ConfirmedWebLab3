@@ -21,46 +21,6 @@ function checker(x, y, r) {
     return resultF;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    loadPoints();
-    console.log("loadPoints");
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    let R_button = $(".r-input select");
-    $(".XYcoord svg").click(function (event) {
-        if (R_button) {
-            const x = event.offsetX;
-            const y = event.offsetY;
-            const R = R_button.val();
-
-            let normalizedX = (((x - 200) * 2 * R) / 300).toFixed(2);
-            let normalizedY = (((200 - y) * 2 * R) / 300).toFixed(2);
-
-            let point = document.createElementNS(
-                "http://www.w3.org/2000/svg",
-                "circle"
-            );
-
-            point.setAttribute("cx", x);
-            point.setAttribute("cy", y);
-            point.setAttribute("r", "3");
-            let checkStatus = checker(normalizedX, normalizedY, R);
-            if (checkStatus) {
-                point.setAttribute("fill", "white");
-            } else {
-                point.setAttribute("fill", "#e42575");
-            }
-
-            $("svg").append(point);
-
-            console.log(`x: ${x}, normX: ${normalizedX}`)
-            console.log(`y: ${y}, normY: ${normalizedY}`)
-            clickSender([{name: 'x', value: normalizedX}, {name: 'y', value: normalizedY}, {name: 'r', value: R}]);
-        }
-    });
-});
-
 function drawPoints(xhr, status, args) {
     console.log(args.response);
     console.log(xhr.responseText)
@@ -92,5 +52,58 @@ function drawPoints(xhr, status, args) {
     }else{
         console.log("no points");
     }
+}
+
+function clear () {
 
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadPoints();
+    console.log("loadPoints");
+
+    $(".XYcoord svg").click(function (event) {
+        // if (R_button) {
+        let R_button = $(".r-input select");
+        const x = event.offsetX;
+        const y = event.offsetY;
+        const R = R_button.val();
+
+        let normalizedX = (((x - 200) * 2 * R) / 300).toFixed(2);
+        let normalizedY = (((200 - y) * 2 * R) / 300).toFixed(2);
+
+        let point = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "circle"
+        );
+
+        point.setAttribute("cx", x);
+        point.setAttribute("cy", y);
+        point.setAttribute("r", "3");
+        point.setAttribute("class", "graph-point");
+        let checkStatus = checker(normalizedX, normalizedY, R);
+        if (checkStatus) {
+            point.setAttribute("fill", "white");
+        } else {
+            point.setAttribute("fill", "#e42575");
+        }
+
+        $("svg").append(point);
+
+        console.log(`x: ${x}, normX: ${normalizedX}`)
+        console.log(`y: ${y}, normY: ${normalizedY}`)
+        try {
+            clickSender([{name: 'x', value: normalizedX}, {name: 'y', value: normalizedY}, {name: 'r', value: R}]);
+        } catch (e) {
+            console.log("clickSender")
+        }
+        // }
+    });
+
+    $("#clear").click(function () {
+        $(".graph-point").each(function() {
+            $(this).remove();
+        });
+    })
+});
+

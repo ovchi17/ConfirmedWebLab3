@@ -41,11 +41,13 @@
                             <line x1="195" y1="275" x2="205" y2="275" stroke="white" stroke-width="2"/>
                             <line x1="195" y1="350" x2="205" y2="350" stroke="white" stroke-width="2"/>
                             <line x1="195" y1="450" x2="205" y2="450" stroke="white" stroke-width="2"/>
-
+                            <!-- Четверть круга -->
                             <path d="M200,200 L200,50 A140,140 0 0,1 350,200 Z"
                                   fill="#1c1326" stroke="white"
                                   stroke-width="1"/>
+                            <!-- Треугольник -->
                             <polygon points="50,200 200,200 200,350" fill="#1c1326" stroke="white" stroke-width="1"/>
+                            <!-- Прямоугольник -->
                             <polygon points="125,50 200,50 200,200 125,200" fill="#1c1326" stroke="white"
                                      stroke-width="1"/>
                             <text class="svgR" x="180" y="55" font-size="13" fill="ghostwhite">R</text>
@@ -69,11 +71,11 @@
                     <div id="structForm">
                         <p:messages showSummary="true" showDetail="false" autoUpdate="true"/>
                         <br> </br>
-                        <div class="x-input">
-                            <h:outputLabel for="x-input" value="Выберете X от -5 до 5: "/>
-                            <h:inputText id="x-input" value="#{xBean.value}" maxlength="7"
+                        <div class="x-input" id="x-input">
+                            <h:outputLabel for="x" value="Выберете X от -5 до 5: "/>
+                            <h:inputText id="x" value="#{xBean.value}" maxlength="7"
                                          validator="#{xBean.xChecker}">
-                                <f:ajax execute="x-input" render="@form"/>
+                                <f:ajax execute="x" render="@form"/>
                             </h:inputText>
                         </div>
                         <div class="y-input" id="y-input">
@@ -111,9 +113,9 @@
     </div>
     <br> </br>
     <div id="resultTable">
-        <h:button class="bigButtons" outcome="change_to_index" value="Hello Page"/>
-        <h:commandButton type="submit" value="Clear" class="bigButtons">
-            <f:ajax execute="@form" listener="#{beanOfElements.clear}" render=":table" />
+        <h:button class="bigButtons" id="helloPage" outcome="change_to_index" value="Hello Page"/>
+        <h:commandButton class="bigButtons" id="clear" type="submit" value="Clear">
+            <f:ajax listener="#{beanOfElements.clear}" render=":table" />
         </h:commandButton>
         <h:dataTable id="table" value="#{beanOfElements.getList()}" var="el">
             <h:column>
