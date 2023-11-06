@@ -21,8 +21,12 @@ function checker(x, y, r) {
     return resultF;
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    loadPoints();
+    console.log("loadPoints");
+});
 
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', function() {
     let R_button = $(".r-input select");
     $(".XYcoord svg").click(function (event) {
         if (R_button) {
@@ -56,3 +60,37 @@ $(document).ready(function () {
         }
     });
 });
+
+function drawPoints(xhr, status, args) {
+    console.log(args.response);
+    console.log(xhr.responseText)
+    if (args && args.response) {
+        var points = JSON.parse(args.response);
+        console.log(points);
+        points.forEach(function(el) {
+            let normalizedX = el.x;
+            let normalizedY = el.y;
+            let r = el.r;
+            let posX = normalizedX * 300 / 2 / r + 200;
+            let posY = 200 - normalizedY * 300 / 2 / r;
+            let point = document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "circle"
+            );
+            point.setAttribute("cx", posX);
+            point.setAttribute("cy", posY);
+            point.setAttribute("r", "3");
+            let checkStatus = checker(normalizedX, normalizedY, r);
+            if (checkStatus) {
+                point.setAttribute("fill", "white");
+            } else {
+                point.setAttribute("fill", "#e42575");
+            }
+
+            $("svg").append(point);
+        });
+    }else{
+        console.log("no points");
+    }
+
+}

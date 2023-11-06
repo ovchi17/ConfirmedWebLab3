@@ -5,6 +5,7 @@
 <h:head>
     <title>Main page</title>
     <h:outputStylesheet name="cssStyles/mainCss.css"/>
+    <h:outputScript library="js" name="graph.js" target="body" defer="true" />
 </h:head>
 <h:body>
     <div class="header">
@@ -60,6 +61,8 @@
                     </p:outputPanel>
                 </p:outputPanel>
             </div>
+            <p:remoteCommand name="loadPoints" action="#{beanOfElements.sendAllPoint}"
+                             oncomplete="drawPoints(xhr, status, args)" />
             <p:remoteCommand name="clickSender" action="#{beanOfElements.addNewGraph}" update=":table" />
             <h:form id="simpleForm" onsubmit="" prependId="false">
                 <div id="form">
@@ -139,6 +142,5 @@
             </h:column>
         </h:dataTable>
     </div>
-    <h:outputScript library="js" name="graph.js"/>
 </h:body>
 </html>

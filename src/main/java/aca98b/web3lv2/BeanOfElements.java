@@ -5,6 +5,9 @@ import jakarta.faces.application.FacesMessage;
 import jakarta.faces.bean.ManagedBean;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 import java.io.Serializable;
 import java.time.LocalTime;
@@ -17,6 +20,7 @@ import jakarta.inject.Inject;
 
 import jakarta.faces.validator.ValidatorException;
 import jakarta.inject.Named;
+import org.primefaces.PrimeFaces;
 
 
 @Named
@@ -90,6 +94,19 @@ public class BeanOfElements implements Serializable {
             String scriptTime = String.format("%.2f", (double) (System.nanoTime() - scriptStart) * 0.0001);
             OneElement el = new OneElement(x, y, r, res, curTime, scriptTime);
             listOfElements.add(el);
+        }
+    }
+
+    public void sendAllPoint(){
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = "[]";
+        try {
+            json = objectMapper.writeValueAsString(listOfElements);
+            System.out.println(json);
+            PrimeFaces.current().ajax().addCallbackParam("response", json);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            PrimeFaces.current().ajax().addCallbackParam("response", "[]");
         }
     }
 
