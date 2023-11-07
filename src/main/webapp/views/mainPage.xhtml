@@ -104,7 +104,7 @@
                             </h:selectOneMenu>
                         </div>
                     </div>
-                    <h:commandButton type="submit" value="Confirm" class="bigButtons">
+                    <h:commandButton type="submit" value="Confirm" class="bigButtons" id="conf">
                         <f:ajax execute="@form" listener="#{beanOfElements.addNew(xBean.value, yBean.value, rBean.value)}" render=":table" />
                     </h:commandButton>
                 </div>

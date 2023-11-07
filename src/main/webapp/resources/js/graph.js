@@ -131,4 +131,37 @@ document.addEventListener('DOMContentLoaded', function() {
         loadPoints()
     })
 });
+$(document).ready(function() {
+    $(document).on('click', '#conf', function(e) {
+        console.log('Button clicked!');
 
+        let Y_button = $(".y-input select");
+        let R_button = $(".r-input select");
+        let x = $('input[id$="x"]').val();
+        let y = Y_button.val();
+        let r = R_button.val();
+        let posX = x * 300 / 2 / r + 200;
+        let posY = 200 - y * 300 / 2 / r;
+
+        console.log("drawPoint")
+        console.log(x, y, r)
+
+        let point = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "circle"
+        );
+
+        point.setAttribute("cx", posX);
+        point.setAttribute("cy", posY);
+        point.setAttribute("r", "3");
+        point.setAttribute("class", "graph-point");
+        let checkStatus = checker(x, y, r);
+        if (checkStatus) {
+            point.setAttribute("fill", "white");
+        } else {
+            point.setAttribute("fill", "#e42575");
+        }
+
+        $("svg").append(point);
+    });
+});
