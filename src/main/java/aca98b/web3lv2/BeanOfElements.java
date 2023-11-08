@@ -34,6 +34,7 @@ public class BeanOfElements implements Serializable {
     private RBean rBean;
     private OneElement element = new OneElement();;
     private List<OneElement> listOfElements;
+    private OneElement example = new OneElement(0f, 0f, 0f, "Example", "Example", "Example");
     private AreaCheck areaCheck = new AreaCheck();
     private float[] arrayOfR = {1.0f, 1.5f, 2.0f, 2.5f, 3.0f};
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -99,7 +100,7 @@ public class BeanOfElements implements Serializable {
                 listOfElements.add(el);
             }
         } catch (Exception e) {
-            System.out.println("БЛЯЯЯЯЯЯЯЯЯЯЯ");
+            System.out.println("error");
         }
     }
 

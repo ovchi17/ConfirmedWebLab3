@@ -70,13 +70,14 @@
             <h:form id="simpleForm" onsubmit="" prependId="false">
                 <div id="form">
                     <div id="structForm">
-                        <p:messages showSummary="true" showDetail="false" autoUpdate="true"/>
+                        <p:messages id="msgPanel" showSummary="true" showDetail="false" autoUpdate="true"/>
                         <br> </br>
                         <div class="x-input" id="x-input">
                             <h:outputLabel for="x" value="Выберете X от -5 до 5: "/>
                             <h:inputText id="x" value="#{xBean.value}" maxlength="7"
                                          validator="#{xBean.xChecker}">
-                                <f:ajax execute="x" render="@form"/>
+                                <f:ajax execute="x" render=":msgPanel"/>
+<!--                                <f:ajax execute="x" render="@form"/>-->
                             </h:inputText>
                         </div>
                         <div class="y-input" id="y-input">

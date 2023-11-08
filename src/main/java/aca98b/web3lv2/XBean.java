@@ -14,7 +14,7 @@ import java.util.Objects;
 @ApplicationScoped
 public class XBean implements Serializable {
 
-    private String value;
+    private String value = "0";
     public String getValue() {
         return value;
     }

@@ -25,7 +25,7 @@ function checker(x, y, r) {
 function drawPoints(xhr, status, args) {
     console.log(args.response);
     console.log(xhr.responseText)
-    if (args && args.response) {
+    if (args && args.response && args.response !== '[]') {
         var points = JSON.parse(args.response);
         console.log(points);
         points.forEach(function(el) {
@@ -75,9 +75,9 @@ function rSetter () {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    rSetter()
     loadPoints();
     console.log("loadPoints");
-    rSetter()
 
     $(".XYcoord svg").click(function (event) {
         // if (R_button) {
@@ -124,14 +124,14 @@ document.addEventListener('DOMContentLoaded', function() {
     })
 
     $(".r-input select").change(function (){
+        R = $(this).val();
         rSetter()
         $(".graph-point").each(function() {
             $(this).remove();
         });
         loadPoints()
     })
-});
-$(document).ready(function() {
+
     $(document).on('click', '#conf', function(e) {
         console.log('Button clicked!');
 
