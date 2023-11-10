@@ -1,4 +1,4 @@
-package aca98b.web3lv2;
+package aca98b.web3lv2.beans;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.faces.application.FacesMessage;
