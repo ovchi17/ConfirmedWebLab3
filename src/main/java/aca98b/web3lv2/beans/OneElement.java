@@ -21,60 +21,60 @@ public final class OneElement {
 
     public OneElement(){
     }
-//
-//    public float getX() {
-//        return x;
-//    }
-//
-//    public void setX(float x) {
-//        this.x = x;
-//    }
-//
-//    public float getY() {
-//        return y;
-//    }
-//
-//    public void setY(float y) {
-//        this.y = y;
-//    }
-//
-//    public float getR() {
-//        return r;
-//    }
-//
-//    public void setR(float r) {
-//        this.r = r;
-//    }
-//
-//    public String getResult() {
-//        return result;
-//    }
-//
-//    public void setResult(String result) {
-//        this.result = result;
-//    }
-//
-//    public String getTime() {
-//        return time;
-//    }
-//
-//    public void setTime(String time) {
-//        this.time = time;
-//    }
-//
-//    public String getScriptTime() {
-//        return scriptTime;
-//    }
-//
-//    public void setScriptTime(String scriptTime) {
-//        this.scriptTime = scriptTime;
-//    }
-//public String getUid() {
-//        return uid;
-//    }
-//
-//    public void setUid (String uid) {
-//        this.uid = uid;
-//    }
+
+    public float getX() {
+        return x;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public float getR() {
+        return r;
+    }
+
+    public void setR(float r) {
+        this.r = r;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getScriptTime() {
+        return scriptTime;
+    }
+
+    public void setScriptTime(String scriptTime) {
+        this.scriptTime = scriptTime;
+    }
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid (String uid) {
+        this.uid = uid;
+    }
 
 }

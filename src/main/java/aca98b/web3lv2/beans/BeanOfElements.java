@@ -43,14 +43,16 @@ public class BeanOfElements implements Serializable {
     @Inject
     private RBean rBean;
     private OneElement element = new OneElement();;
-    private List<OneElement> listOfElements = loadDB();
+    private List<OneElement> listOfElements = new ArrayList<>();
     private OneElement example = new OneElement(0f, 0f, 0f, "Example", "Example", "Example", "Example");
     private AreaCheck areaCheck = new AreaCheck();
     private float[] arrayOfR = {1.0f, 1.5f, 2.0f, 2.5f, 3.0f};
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
+    private HibernateUtil hibernateUtil = new HibernateUtil();
+
     public BeanOfElements() {
-        listOfElements = new ArrayList<>();
+        listOfElements = loadDB();
     }
 
     public void addNew(String xNew, String yNew, String rNew){
@@ -69,6 +71,8 @@ public class BeanOfElements implements Serializable {
                 String scriptTime = String.format("%.2f", (double) (System.nanoTime() - scriptStart) * 0.0001);
                 OneElement el = new OneElement(x, y, r, res, curTime, scriptTime, "bruh");
                 listOfElements.add(el);
+                saveDB(el);
+
             }
         } catch (Exception e) {
             FacesMessage message = new FacesMessage("Bad args for numbers!");
@@ -87,6 +91,16 @@ public class BeanOfElements implements Serializable {
     }
 
     public List<OneElement> getList(){
+        System.out.println("----------------------------");
+        for (OneElement oneElement : listOfElements) {
+            System.out.println(oneElement.x);
+            System.out.println(oneElement.y);
+            System.out.println(oneElement.r);
+            System.out.println(oneElement.result);
+            System.out.println(oneElement.time);
+            System.out.println(oneElement.scriptTime);
+            System.out.println(oneElement.uid);
+        }
         return listOfElements;
     }
 
@@ -108,6 +122,7 @@ public class BeanOfElements implements Serializable {
                 String scriptTime = String.format("%.2f", (double) (System.nanoTime() - scriptStart) * 0.0001);
                 OneElement el = new OneElement(x, y, r, res, curTime, scriptTime, "bruh");
                 listOfElements.add(el);
+                saveDB(el);
             }
         } catch (Exception e) {
             System.out.println("error");
@@ -128,14 +143,20 @@ public class BeanOfElements implements Serializable {
     }
 
     public List<OneElement> loadDB() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        HibernateCriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-        JpaCriteriaQuery<HibernateElement> query = criteriaBuilder.createQuery(HibernateElement.class);
-        JpaRoot<HibernateElement> root = query.from(HibernateElement.class);
-        query.select(root);
-        List<HibernateElement> userList = session.createQuery(query).getResultList();
+        Session session = hibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        Query<HibernateElement> query = session.createQuery("FROM HibernateElement", HibernateElement.class);
+        List<HibernateElement> userList = query.getResultList();
+        session.getTransaction().commit();
         List<OneElement> resultList = new ArrayList<OneElement>();
         for (HibernateElement hibernateElement : userList) {
+            System.out.println(hibernateElement.getX());
+            System.out.println(hibernateElement.getY());
+            System.out.println(hibernateElement.getR());
+            System.out.println(hibernateElement.getResult());
+            System.out.println(hibernateElement.getTime());
+            System.out.println(hibernateElement.getScriptTime());
+            System.out.println(hibernateElement.getUid());
             OneElement oneElement = new OneElement(
                     hibernateElement.getX(),
                     hibernateElement.getY(),
@@ -144,13 +165,32 @@ public class BeanOfElements implements Serializable {
                     hibernateElement.getTime(),
                     hibernateElement.getScriptTime(),
                     hibernateElement.getUid());
+            System.out.println("------------------------------");
+            System.out.println(oneElement.x);
+            System.out.println(oneElement.y);
+            System.out.println(oneElement.r);
+            System.out.println(oneElement.result);
+            System.out.println(oneElement.time);
+            System.out.println(oneElement.scriptTime);
+            System.out.println(oneElement.uid);
             resultList.add(oneElement);
         }
         return resultList;
     }
 
-    public void saveDB() {
-
+    public void saveDB(OneElement el) {
+        Session session = hibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        HibernateElement resultEl = new HibernateElement();
+        resultEl.x = el.x;
+        resultEl.y = el.y;
+        resultEl.r = el.r;
+        resultEl.result = el.result;
+        resultEl.time = el.time;
+        resultEl.scriptTime = el.scriptTime;
+        resultEl.uid = el.uid;
+        session.save(resultEl);
+        session.getTransaction().commit();
     }
 
     public void clearDB() {
