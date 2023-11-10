@@ -86,6 +86,7 @@ public class BeanOfElements implements Serializable {
 
     public void clear(){
         listOfElements.clear();
+        clearDB();
         System.out.println(listOfElements);
         System.out.println("NORM 4ISTENbKO");
     }
@@ -194,7 +195,15 @@ public class BeanOfElements implements Serializable {
     }
 
     public void clearDB() {
+        Session session = hibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
 
+        String hql = "DELETE FROM HibernateElement";
+        Query query = session.createQuery(hql);
+        query.executeUpdate();
+
+        session.getTransaction().commit();
+        session.close();
     }
 
 }
