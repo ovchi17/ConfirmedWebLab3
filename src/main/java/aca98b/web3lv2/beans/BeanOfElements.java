@@ -20,6 +20,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import jakarta.inject.Inject;
 
@@ -92,16 +93,6 @@ public class BeanOfElements implements Serializable {
     }
 
     public List<OneElement> getList(){
-        System.out.println("----------------------------");
-        for (OneElement oneElement : listOfElements) {
-            System.out.println(oneElement.x);
-            System.out.println(oneElement.y);
-            System.out.println(oneElement.r);
-            System.out.println(oneElement.result);
-            System.out.println(oneElement.time);
-            System.out.println(oneElement.scriptTime);
-            System.out.println(oneElement.uid);
-        }
         return listOfElements;
     }
 
@@ -145,65 +136,48 @@ public class BeanOfElements implements Serializable {
 
     public List<OneElement> loadDB() {
         Session session = hibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
         Query<HibernateElement> query = session.createQuery("FROM HibernateElement", HibernateElement.class);
         List<HibernateElement> userList = query.getResultList();
-        session.getTransaction().commit();
-        List<OneElement> resultList = new ArrayList<OneElement>();
-        for (HibernateElement hibernateElement : userList) {
-            System.out.println(hibernateElement.getX());
-            System.out.println(hibernateElement.getY());
-            System.out.println(hibernateElement.getR());
-            System.out.println(hibernateElement.getResult());
-            System.out.println(hibernateElement.getTime());
-            System.out.println(hibernateElement.getScriptTime());
-            System.out.println(hibernateElement.getUid());
-            OneElement oneElement = new OneElement(
-                    hibernateElement.getX(),
-                    hibernateElement.getY(),
-                    hibernateElement.getR(),
-                    hibernateElement.getResult(),
-                    hibernateElement.getTime(),
-                    hibernateElement.getScriptTime(),
-                    hibernateElement.getUid());
-            System.out.println("------------------------------");
-            System.out.println(oneElement.x);
-            System.out.println(oneElement.y);
-            System.out.println(oneElement.r);
-            System.out.println(oneElement.result);
-            System.out.println(oneElement.time);
-            System.out.println(oneElement.scriptTime);
-            System.out.println(oneElement.uid);
-            resultList.add(oneElement);
-        }
-        return resultList;
+        session.close();
+
+        return userList.stream()
+                .map(hibernateElement -> new OneElement(
+                        hibernateElement.getX(),
+                        hibernateElement.getY(),
+                        hibernateElement.getR(),
+                        hibernateElement.getResult(),
+                        hibernateElement.getTime(),
+                        hibernateElement.getScriptTime(),
+                        hibernateElement.getUid()
+                ))
+                .collect(Collectors.toList());
     }
 
     public void saveDB(OneElement el) {
         Session session = hibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         HibernateElement resultEl = new HibernateElement();
-        resultEl.x = el.x;
-        resultEl.y = el.y;
-        resultEl.r = el.r;
-        resultEl.result = el.result;
-        resultEl.time = el.time;
-        resultEl.scriptTime = el.scriptTime;
-        resultEl.uid = el.uid;
+        resultEl.setX(el.getX());
+        resultEl.setY(el.getY());
+        resultEl.setR(el.getR());
+        resultEl.setResult(el.getResult());
+        resultEl.setTime(el.getTime());
+        resultEl.setScriptTime(el.getScriptTime());
+        resultEl.setUid(el.getUid());
         session.save(resultEl);
         session.getTransaction().commit();
     }
 
     public void clearDB() {
-        Session session = hibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
+        try (Session session = hibernateUtil.getSessionFactory().openSession()) {
+            session.beginTransaction();
 
-        String hql = "DELETE FROM HibernateElement";
-        Query query = session.createQuery(hql);
-        query.executeUpdate();
+            String hql = "DELETE FROM HibernateElement";
+            Query query = session.createQuery(hql);
+            query.executeUpdate();
 
-        session.getTransaction().commit();
-        session.close();
+            session.getTransaction().commit();
+        }
     }
 
 }

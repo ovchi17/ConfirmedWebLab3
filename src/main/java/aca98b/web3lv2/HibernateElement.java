@@ -12,25 +12,24 @@ import java.util.Locale;
 @Entity
 @Table(name = "aca98b")
 public class HibernateElement implements Serializable {
+    public HibernateElement(){}
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public int id;
+    private int id;
     @Column(nullable = false)
-    public float x;
+    private float x;
     @Column(nullable = false)
-    public float y;
+    private float y;
     @Column(nullable = false)
-    public float r;
+    private float r;
     @Column(nullable = false)
-    public String result;
+    private String result;
     @Column(nullable = false)
-    public String time;
+    private String time;
     @Column(nullable = false)
-    public String scriptTime;
+    private String scriptTime;
     @Column(nullable = false)
-    public String uid;
-
-    public HibernateElement(){}
+    private String uid;
 
     public int getId() {
         return id;
@@ -95,8 +94,4 @@ public class HibernateElement implements Serializable {
     public void setUid(String uid) {
         this.uid = uid;
     }
-
-//    public String toJson() {
-//        return String.format(Locale.US, "{\"x\": %.2f, \"y\": %.2f, \"r\": %.2f, \"result\": %b}", x, y, r, result);
-//    }
 }

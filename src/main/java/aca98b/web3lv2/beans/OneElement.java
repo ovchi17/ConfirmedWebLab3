@@ -1,13 +1,13 @@
 package aca98b.web3lv2.beans;
 
 public final class OneElement {
-    public float x;
-    public float y;
-    public float r;
-    public String result;
-    public String time;
-    public String scriptTime;
-    public String uid;
+    private float x;
+    private float y;
+    private float r;
+    private String result;
+    private String time;
+    private String scriptTime;
+    private String uid;
 
     public OneElement(float x, float y, float r, String result, String time, String scriptTime, String uid){
         this.x = x;
