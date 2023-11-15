@@ -7,11 +7,14 @@ import aca98b.web3lv2.beans.OneElement;
 import aca98b.web3lv2.beans.RBean;
 import aca98b.web3lv2.beans.XBean;
 import aca98b.web3lv2.beans.YBean;
+import jakarta.annotation.Resource;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 
 import java.io.Serializable;
@@ -36,7 +39,7 @@ import org.primefaces.PrimeFaces;
 
 
 @Named
-@ApplicationScoped
+@SessionScoped
 public class BeanOfElements implements Serializable {
     @Inject
     private XBean xBean;
@@ -54,9 +57,7 @@ public class BeanOfElements implements Serializable {
 
     public BeanOfElements() {
         listOfElements = loadDB();
-        FacesContext fCtx = FacesContext.getCurrentInstance();
-        HttpSession session = (HttpSession) fCtx.getExternalContext().getSession(false);
-        sessionId = session.getId();
+        sessionId = FacesContext.getCurrentInstance().getExternalContext().getSessionId(true);
     }
 
     public void addNew(String xNew, String yNew, String rNew){

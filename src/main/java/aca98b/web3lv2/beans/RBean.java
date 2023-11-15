@@ -1,6 +1,7 @@
 package aca98b.web3lv2.beans;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
@@ -11,7 +12,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Named
-@ApplicationScoped
+@SessionScoped
 public class RBean implements Serializable {
 
     private String value;
