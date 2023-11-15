@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Main page</title>
+    <h:outputStylesheet name="cssStyles/mainCss.css"/>
+    <h:outputScript library="js" name="graph.js" target="body" defer="true" />
+</h:head>
+<h:body>
+    <div class="header">
+        <h:panelGroup>
+            <h2>Lab №3</h2>
+            <br/>
+            Ovchinnikov Ilya | Babushkin Alexander, P3221
+            <br/>
+            Var №2145
+        </h:panelGroup>
+    </div>
+    <div class="workZone">
+        <div class="container">
+            <div class="XYcoord">
+                <p:outputPanel id="coordinatePanelWrapper"
+                               style="position: relative; margin-top: 10px; margin-left: 70px;">
+                    <p:outputPanel id="coordinatePanel" style="position: absolute; width: 400px; height: 400px;">
+                        <svg width="400" height="400">
+                            <line x1="0" y1="200" x2="400" y2="200" stroke="white" stroke-width="2"/>
+                            <line x1="200" y1="0" x2="200" y2="400" stroke="white" stroke-width="2"/>
+                            <!-- STRELOCHKI -->
+                            <polygon points="400,200 390,195 390,205" fill="white"/>
+                            <polygon points="200,0 195,10 205,10" fill="white"/>
+
+                            <!-- Четверть круга -->
+                            <path d="M200,200 L200,50 A140,140 0 0,1 350,200 Z"
+                                  fill="#1c1326" stroke="white"
+                                  stroke-width="1"/>
+                            <!-- Треугольник -->
+                            <polygon points="50,200 200,200 200,350" fill="#1c1326" stroke="white" stroke-width="1"/>
+                            <!-- Прямоугольник -->
+                            <polygon points="125,50 200,50 200,200 125,200" fill="#1c1326" stroke="white"
+                                     stroke-width="1"/>
+
+                            <!-- черточки X-->
+                            <line x1="50" y1="195" x2="50" y2="205" stroke="white" stroke-width="2"/>
+                            <line x1="125" y1="195" x2="125" y2="205" stroke="white" stroke-width="2"/>
+                            <line x1="275" y1="195" x2="275" y2="205" stroke="white" stroke-width="2"/>
+                            <line x1="350" y1="195" x2="350" y2="205" stroke="white" stroke-width="2"/>
+                            <!-- черточки Y-->
+                            <line x1="195" y1="50" x2="205" y2="50" stroke="white" stroke-width="2"/>
+                            <line x1="195" y1="125" x2="205" y2="125" stroke="white" stroke-width="2"/>
+                            <line x1="195" y1="275" x2="205" y2="275" stroke="white" stroke-width="2"/>
+                            <line x1="195" y1="350" x2="205" y2="350" stroke="white" stroke-width="2"/>
+
+                            <text class="svgR" id="R1" x="180" y="55" font-size="13" fill="ghostwhite">R</text>
+                            <text class="svgRd2" id="R2" x="173" y="129" font-size="13" fill="ghostwhite">R/2</text>
+                            <text class="svg-Rd2" id="R3" x="169" y="279" font-size="13" fill="ghostwhite">-R/2</text>
+                            <text class="svg-R" id="R4" x="180" y="355" font-size="13" fill="ghostwhite">-R</text>
+
+                            <text class="svg-R" id="R5" x="45" y="220" font-size="13" fill="ghostwhite">-R</text>
+                            <text class="svg-Rd2" id="R6" x="110" y="220" font-size="13" fill="ghostwhite">-R/2</text>
+                            <text class="svgRd2" id="R7" x="265" y="220" font-size="13" fill="ghostwhite">R/2</text>
+                            <text class="svgR" id="R8" x="345" y="220" font-size="13" fill="ghostwhite">R</text>
+                        </svg>
+                    </p:outputPanel>
+                </p:outputPanel>
+            </div>
+            <p:remoteCommand name="loadPoints" action="#{beanOfElements.sendAllPoint}"
+                             oncomplete="drawPoints(xhr, status, args)" />
+            <p:remoteCommand name="clickSender" action="#{beanOfElements.addNewGraph}" update=":table" />
+            <h:form id="simpleForm" onsubmit="" prependId="false">
+                <div id="form">
+                    <div id="structForm">
+                        <p:messages id="msgPanel" showSummary="true" showDetail="false" autoUpdate="true"/>
+                        <br> </br>
+                        <div class="x-input" id="x-input">
+                            <h:outputLabel for="x" value="Выберете X от -5 до 5: "/>
+                            <h:inputText id="x" value="#{xBean.value}" maxlength="7"
+                                         validator="#{xBean.xChecker}">
+                                <f:ajax execute="x" render=":msgPanel"/>
+                                <!--                                <f:ajax execute="x" render="@form"/>-->
+                            </h:inputText>
+                        </div>
+                        <div class="y-input" id="y-input">
+                            <h:outputLabel value="Выберете Y: "/>
+                            <h:selectOneMenu value="#{yBean.value}">
+                                <f:selectItem itemValue="-3" itemLabel="-3"/>
+                                <f:selectItem itemValue="-2" itemLabel="-2"/>
+                                <f:selectItem itemValue="-1" itemLabel="-1"/>
+                                <f:selectItem itemValue="0" itemLabel="0"/>
+                                <f:selectItem itemValue="1" itemLabel="1"/>
+                                <f:selectItem itemValue="2" itemLabel="2"/>
+                                <f:selectItem itemValue="3" itemLabel="3"/>
+                                <f:selectItem itemValue="4" itemLabel="4"/>
+                                <f:selectItem itemValue="5" itemLabel="5"/>
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="r-input" id="r-input">
+                            <h:outputLabel value="Выберете R: "/>
+                            <h:selectOneMenu value="#{rBean.value}">
+                                <f:selectItem itemValue="1" itemLabel="1"/>
+                                <f:selectItem itemValue="1.5" itemLabel="1.5"/>
+                                <f:selectItem itemValue="2" itemLabel="2"/>
+                                <f:selectItem itemValue="2.5" itemLabel="2.5"/>
+                                <f:selectItem itemValue="3" itemLabel="3"/>
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+                    <h:commandButton type="submit" value="Confirm" class="bigButtons" id="conf">
+                        <f:ajax execute="@form" listener="#{beanOfElements.addNew(xBean.value, yBean.value, rBean.value)}" render=":table" />
+                    </h:commandButton>
+                </div>
+            </h:form>
+
+        </div>
+    </div>
+    <br> </br>
+    <div id="resultTable">
+        <h:button class="bigButtons" id="helloPage" outcome="change_to_index" value="Hello Page"/>
+        <h:commandButton class="bigButtons" id="clear" type="submit" value="Clear">
+            <f:ajax listener="#{beanOfElements.clear}" render=":table" />
+        </h:commandButton>
+        <h:dataTable id="table" value="#{beanOfElements.getList()}" var="el">
+            <h:column>
+                <f:facet name="header">Result</f:facet>
+                <h:outputText value="#{el.result}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">X</f:facet>
+                <h:outputText value="#{el.x}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Y</f:facet>
+                <h:outputText value="#{el.y}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">R</f:facet>
+                <h:outputText value="#{el.r}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Current Time</f:facet>
+                <h:outputText value="#{el.time}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Script Time</f:facet>
+                <h:outputText value="#{el.scriptTime}"/>
+            </h:column>
+        </h:dataTable>
+    </div>
+</h:body>
+</html>

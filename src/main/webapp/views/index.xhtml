@@ -8,6 +8,7 @@
 <h:head>
     <title>Start page</title>
     <h:outputStylesheet name="cssStyles/indexStyle.css" />
+    <h:outputScript library="js" name="clock.js"/>
 </h:head>
 
 <h:body>
@@ -21,8 +22,10 @@
         </h:panelGroup>
     </div>
     <br/>
-    <h1>Пример использования p:outputLabel</h1>
-
-    <p:clock displayMode="analog" mode="server" autoSync="true" syncInterval="9000"/>
+    <div class="mainStruct">
+        <h1 id="clock">00:00:00</h1>
+        <h:button class="bigButtons" outcome="change_to_main" value="Main Page">
+        </h:button>
+    </div>
 </h:body>
 </html>

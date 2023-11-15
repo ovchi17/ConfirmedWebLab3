@@ -38,5 +38,4 @@ bin/
 ### VS Code ###
 .vscode/
 
-### Mac OS ###
-.DS_Store
+hibernate.cfg.xml
