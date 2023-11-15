@@ -26,6 +26,7 @@ import jakarta.inject.Inject;
 
 import jakarta.faces.validator.ValidatorException;
 import jakarta.inject.Named;
+import jakarta.servlet.http.HttpSession;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
@@ -45,15 +46,17 @@ public class BeanOfElements implements Serializable {
     private RBean rBean;
     private OneElement element = new OneElement();;
     private List<OneElement> listOfElements = new ArrayList<>();
-    private OneElement example = new OneElement(0f, 0f, 0f, "Example", "Example", "Example", "Example");
     private AreaCheck areaCheck = new AreaCheck();
     private float[] arrayOfR = {1.0f, 1.5f, 2.0f, 2.5f, 3.0f};
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-
     private HibernateUtil hibernateUtil = new HibernateUtil();
+    private String sessionId = "";
 
     public BeanOfElements() {
         listOfElements = loadDB();
+        FacesContext fCtx = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fCtx.getExternalContext().getSession(false);
+        sessionId = session.getId();
     }
 
     public void addNew(String xNew, String yNew, String rNew){
@@ -70,7 +73,7 @@ public class BeanOfElements implements Serializable {
                 LocalTime currentTime = LocalTime.now();
                 String curTime = currentTime.format(formatter);
                 String scriptTime = String.format("%.2f", (double) (System.nanoTime() - scriptStart) * 0.0001);
-                OneElement el = new OneElement(x, y, r, res, curTime, scriptTime, "bruh");
+                OneElement el = new OneElement(x, y, r, res, curTime, scriptTime, sessionId);
                 listOfElements.add(el);
                 saveDB(el);
 
@@ -112,7 +115,7 @@ public class BeanOfElements implements Serializable {
                 LocalTime currentTime = LocalTime.now();
                 String curTime = currentTime.format(formatter);
                 String scriptTime = String.format("%.2f", (double) (System.nanoTime() - scriptStart) * 0.0001);
-                OneElement el = new OneElement(x, y, r, res, curTime, scriptTime, "bruh");
+                OneElement el = new OneElement(x, y, r, res, curTime, scriptTime, sessionId);
                 listOfElements.add(el);
                 saveDB(el);
             }
@@ -131,6 +134,7 @@ public class BeanOfElements implements Serializable {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             PrimeFaces.current().ajax().addCallbackParam("response", "[]");
+
         }
     }
 
@@ -139,8 +143,8 @@ public class BeanOfElements implements Serializable {
         Query<HibernateElement> query = session.createQuery("FROM HibernateElement", HibernateElement.class);
         List<HibernateElement> userList = query.getResultList();
         session.close();
-
         return userList.stream()
+                .filter(hibernateElement -> hibernateElement.getUid().equals(sessionId))
                 .map(hibernateElement -> new OneElement(
                         hibernateElement.getX(),
                         hibernateElement.getY(),
@@ -171,9 +175,9 @@ public class BeanOfElements implements Serializable {
     public void clearDB() {
         try (Session session = hibernateUtil.getSessionFactory().openSession()) {
             session.beginTransaction();
-
-            String hql = "DELETE FROM HibernateElement";
+            String hql = "DELETE FROM HibernateElement t WHERE t.uid = :value";
             Query query = session.createQuery(hql);
+            query.setParameter("value", sessionId);
             query.executeUpdate();
 
             session.getTransaction().commit();
