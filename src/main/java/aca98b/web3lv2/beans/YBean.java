@@ -24,7 +24,7 @@ public class YBean implements Serializable {
 
     public void yChecker(FacesContext fC, UIComponent uC, Object val) {
         if (val == null) {
-            System.out.println("soon");
+            System.out.println("err");
         }
     }
 }

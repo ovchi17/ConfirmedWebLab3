@@ -74,21 +74,6 @@ function rSetter () {
     })
 }
 
-function explodeAndReload() {
-    document.body.classList.add('animate__animated', 'animate__hinge');
-
-    // Установите таймер на 2 секунды для анимации взрыва перед перезагрузкой
-    setTimeout(function() {
-        window.location.reload();
-    }, 2000);
-}
-
-// function playAudio(){
-//     let myAudio = new Audio;
-//     myAudio.src = "../boom.wav";
-//     myAudio.play();
-// }
-
 $(document).ready(function() {
     rSetter()
     loadPoints();

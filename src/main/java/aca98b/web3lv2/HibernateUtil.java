@@ -15,7 +15,7 @@ public class HibernateUtil {
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);
         } catch (Throwable ex) {
-            System.out.println("Инициализация SessionFactory не удалась: " + ex.getStackTrace());
+            System.out.println("Ini SessionFactory error: " + ex.getStackTrace());
             throw new ExceptionInInitializerError(ex);
         }
     }

@@ -25,7 +25,7 @@ public class RBean implements Serializable {
 
     public void rChecker(FacesContext fC, UIComponent uC, Object val) {
         if (val == null) {
-            System.out.println("soon");
+            System.out.println("err");
         }
     }
 }
