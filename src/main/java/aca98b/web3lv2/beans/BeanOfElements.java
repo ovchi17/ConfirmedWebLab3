@@ -60,16 +60,13 @@ public class BeanOfElements implements Serializable {
         sessionId = FacesContext.getCurrentInstance().getExternalContext().getSessionId(true);
     }
 
-    public void addNew(String xNew, String yNew, String rNew){
-        try{
+    private void addElement(String xNew, String yNew, String rNew){
+        try {
             float x = Float.parseFloat(xNew);
             float y = Float.parseFloat(yNew);
             float r = Float.parseFloat(rNew);
-            System.out.println(x);
-            System.out.println(y);
-            System.out.println(r);
             long scriptStart = System.nanoTime();
-            if (x >= -5f && x <= 5f && y >= -3f && y <= 5f && areaCheck.inArr(r, arrayOfR)){
+            if (x >= -5f && x <= 5f && y >= -3f && y <= 5f && areaCheck.inArr(r, arrayOfR)) {
                 String res = areaCheck.checker(x, y, r);
                 LocalTime currentTime = LocalTime.now();
                 String curTime = currentTime.format(formatter);
@@ -79,10 +76,17 @@ public class BeanOfElements implements Serializable {
                 saveDB(el);
 
             }
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             FacesMessage message = new FacesMessage("Bad args for numbers!");
             throw new ValidatorException(message);
         }
+    }
+
+    public void addNew(String x, String y, String r){ addElement(x, y, r); }
+
+    public void addNewGraph(){
+        Map<String, String> values = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        addNew(values.get("x"), values.get("y"), values.get("r"));
     }
 
     public int getSize(){
@@ -100,30 +104,7 @@ public class BeanOfElements implements Serializable {
         return listOfElements;
     }
 
-    public void addNewGraph(){
-        Map<String, String> values = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        try {
-            float x = Float.parseFloat(values.get("x"));
-            float y = Float.parseFloat(values.get("y"));
-            float r = Float.parseFloat(values.get("r"));
-            System.out.println("GOT VALUES");
-            System.out.println(x);
-            System.out.println(y);
-            System.out.println(r);
-            long scriptStart = System.nanoTime();
-            if (x >= -5f && x <= 5f && y >= -3f && y <= 5f && areaCheck.inArr(r, arrayOfR)) {
-                String res = areaCheck.checker(x, y, r);
-                LocalTime currentTime = LocalTime.now();
-                String curTime = currentTime.format(formatter);
-                String scriptTime = String.format("%.2f", (double) (System.nanoTime() - scriptStart) * 0.0001);
-                OneElement el = new OneElement(x, y, r, res, curTime, scriptTime, sessionId);
-                listOfElements.add(el);
-                saveDB(el);
-            }
-        } catch (Exception e) {
-            System.out.println("error");
-        }
-    }
+
 
     public void sendAllPoint(){
         ObjectMapper objectMapper = new ObjectMapper();
