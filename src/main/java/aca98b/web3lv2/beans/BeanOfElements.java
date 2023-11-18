@@ -20,13 +20,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.Serializable;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import jakarta.inject.Inject;
-
 import jakarta.faces.validator.ValidatorException;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpSession;
@@ -36,6 +33,11 @@ import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.hibernate.query.criteria.JpaCriteriaQuery;
 import org.hibernate.query.criteria.JpaRoot;
 import org.primefaces.PrimeFaces;
+
+import java.security.Key;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
 
 
 @Named
@@ -54,6 +56,7 @@ public class BeanOfElements implements Serializable {
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
     private HibernateUtil hibernateUtil = new HibernateUtil();
     private String sessionId = "";
+    private String noToken = "noToken";
 
     public BeanOfElements() {
         listOfElements = loadDB();
@@ -71,9 +74,8 @@ public class BeanOfElements implements Serializable {
                 LocalTime currentTime = LocalTime.now();
                 String curTime = currentTime.format(formatter);
                 String scriptTime = String.format("%.2f", (double) (System.nanoTime() - scriptStart) * 0.0001);
-                OneElement el = new OneElement(x, y, r, res, curTime, scriptTime, sessionId);
-                listOfElements.add(el);
-                saveDB(el);
+                OneElement el = new OneElement(x, y, r, res, curTime, scriptTime, sessionId, generateToken());
+                proofOfOperation(el);
 
             }
         } catch (NumberFormatException e) {
@@ -134,7 +136,8 @@ public class BeanOfElements implements Serializable {
                         hibernateElement.getResult(),
                         hibernateElement.getTime(),
                         hibernateElement.getScriptTime(),
-                        hibernateElement.getUid()
+                        hibernateElement.getUid(),
+                        noToken
                 ))
                 .collect(Collectors.toList());
     }
@@ -164,6 +167,39 @@ public class BeanOfElements implements Serializable {
 
             session.getTransaction().commit();
         }
+    }
+
+    public void proofOfOperation(OneElement el){
+        try{
+            String token = el.getUtoken();
+            listOfElements.add(el);
+            try{
+                saveDB(el);
+            }catch (Exception e){
+                listOfElements.removeIf(element -> Objects.equals(element.getUtoken(), token));
+                FacesMessage message = new FacesMessage("stop process");
+                throw new ValidatorException(message);
+            }
+        }catch (Exception e){
+            FacesMessage message = new FacesMessage("stop process");
+            throw new ValidatorException(message);
+        }
+    }
+
+    public String generateToken(){
+        String resultToken = "";
+        try {
+            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+            keyGen.initialize(512);
+            KeyPair keyPair = keyGen.generateKeyPair();
+            byte[] privateKeyBytes = keyPair.getPrivate().getEncoded();
+            byte[] shortPrivateKey = new byte[50];
+            System.arraycopy(privateKeyBytes, 0, shortPrivateKey, 0, 50);
+            resultToken = Base64.getEncoder().encodeToString(shortPrivateKey);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return resultToken;
     }
 
 }

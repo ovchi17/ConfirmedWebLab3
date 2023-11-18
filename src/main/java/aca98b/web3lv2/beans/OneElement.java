@@ -8,8 +8,9 @@ public final class OneElement {
     private String time;
     private String scriptTime;
     private String uid;
+    private String utoken;
 
-    public OneElement(float x, float y, float r, String result, String time, String scriptTime, String uid){
+    public OneElement(float x, float y, float r, String result, String time, String scriptTime, String uid, String utoken){
         this.x = x;
         this.y = y;
         this.r = r;
@@ -17,6 +18,7 @@ public final class OneElement {
         this.time = time;
         this.scriptTime = scriptTime;
         this.uid = uid;
+        this.utoken = utoken;
     }
 
     public OneElement(){
@@ -75,6 +77,14 @@ public final class OneElement {
 
     public void setUid (String uid) {
         this.uid = uid;
+    }
+
+    public String getUtoken() {
+        return utoken;
+    }
+
+    public void setUtoken(String utoken) {
+        this.utoken = utoken;
     }
 
 }
