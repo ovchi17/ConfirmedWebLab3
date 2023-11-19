@@ -3,12 +3,6 @@ package aca98b.web3lv2.beans;
 import aca98b.web3lv2.AreaCheck;
 import aca98b.web3lv2.HibernateElement;
 import aca98b.web3lv2.HibernateUtil;
-import aca98b.web3lv2.beans.OneElement;
-import aca98b.web3lv2.beans.RBean;
-import aca98b.web3lv2.beans.XBean;
-import aca98b.web3lv2.beans.YBean;
-import jakarta.annotation.Resource;
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
@@ -16,8 +10,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
-
+import java.io.IOException;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -26,15 +21,12 @@ import java.util.stream.Collectors;
 import jakarta.inject.Inject;
 import jakarta.faces.validator.ValidatorException;
 import jakarta.inject.Named;
-import jakarta.servlet.http.HttpSession;
+import org.hibernate.HibernateError;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.hibernate.query.criteria.HibernateCriteriaBuilder;
-import org.hibernate.query.criteria.JpaCriteriaQuery;
-import org.hibernate.query.criteria.JpaRoot;
 import org.primefaces.PrimeFaces;
 
-import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -57,6 +49,11 @@ public class BeanOfElements implements Serializable {
     private HibernateUtil hibernateUtil = new HibernateUtil();
     private String sessionId = "";
     private String noToken = "noToken";
+    private Float minX = -5f;
+    private Float maxX = 5f;
+    private Float minY = -3f;
+    private Float maxY = 5f;
+
 
     public BeanOfElements() {
         listOfElements = loadDB();
@@ -69,14 +66,13 @@ public class BeanOfElements implements Serializable {
             float y = Float.parseFloat(yNew);
             float r = Float.parseFloat(rNew);
             long scriptStart = System.nanoTime();
-            if (x >= -5f && x <= 5f && y >= -3f && y <= 5f && areaCheck.inArr(r, arrayOfR)) {
+            if (x >= minX && x <= maxX && y >= minY && y <= maxY && areaCheck.inArr(r, arrayOfR)) {
                 String res = areaCheck.checker(x, y, r);
                 LocalTime currentTime = LocalTime.now();
                 String curTime = currentTime.format(formatter);
                 String scriptTime = String.format("%.2f", (double) (System.nanoTime() - scriptStart) * 0.0001);
                 OneElement el = new OneElement(x, y, r, res, curTime, scriptTime, sessionId, generateToken());
-                proofOfOperation(el);
-
+                safetyAdd(el);
             }
         } catch (NumberFormatException e) {
             FacesMessage message = new FacesMessage("Bad args for numbers!");
@@ -169,19 +165,19 @@ public class BeanOfElements implements Serializable {
         }
     }
 
-    public void proofOfOperation(OneElement el){
-        try{
+    public void safetyAdd(OneElement el) {
+        try {
             String token = el.getUtoken();
             listOfElements.add(el);
-            try{
+            try {
                 saveDB(el);
-            }catch (Exception e){
+            } catch (HibernateException e) { // Используем HibernateException вместо HibernateError
                 listOfElements.removeIf(element -> Objects.equals(element.getUtoken(), token));
-                FacesMessage message = new FacesMessage("stop process");
+                FacesMessage message = new FacesMessage("Ошибка при сохранении в БД");
                 throw new ValidatorException(message);
             }
-        }catch (Exception e){
-            FacesMessage message = new FacesMessage("stop process");
+        } catch (Exception e) {
+            FacesMessage message = new FacesMessage("Ошибка ввода-вывода");
             throw new ValidatorException(message);
         }
     }
